@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <style>
+      body {
+        text-align: center;
+        font-size: large;
+        background-color: bisque;
+        padding: 20px;
+        overflow-y: scroll;
+        height: 100vh;
+      }
+
+      .button-list {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .button-list button {
+        height: 50px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>TODAY'S WEATHER</h1>
+    <div class="message">
+      Press <strong> Ctrl + W (or) File → Enter city </strong> to open a new window to enter input.
+    </div>
+    <div class="info" style="margin: 10px 10px;">
+      <div class="city"><span id="city-name"> </span></div>
+      <div class="city"><span id="city-weather"> </span></div>
+      <div class="city"><span id="city-temp"> </span></div>
+    </div>
+
+    <div class="button-list" id="buttons">
+      <script>
+        const { ipcRenderer } = require("electron");
+
+        ipcRenderer.on("city:find", (e, city) => {
+          fetchData(city);
+        });
+
+        function fetchData(city) {
+          fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${YOUR_API_KEY}&units=metric`
+          )
+            .then(function (weather) {
+              return weather.json();
+            })
+            .then(displayWeather);
+        }
+
+        function displayWeather(weather) {
+          document.getElementById("city-name").innerHTML =
+            `<strong> City: </strong> ${weather.name}, ${weather.sys.country}`;
+          document.getElementById("city-weather").innerHTML =
+            `<strong> Weather: </strong> ${weather.weather[0].main}`;
+          document.getElementById("city-temp").innerHTML =
+            `<strong> Temperature: </strong> ${Math.ceil(weather.main.temp)} °C`;
+        }
+
+        // Add scrollable buttons for touch testing
+        for (let i = 1; i <= 40; i++) {
+          const btn = document.createElement("button");
+          btn.textContent = `Scroll Button ${i}`;
+          btn.onclick = () => alert(`Touched Button ${i}`);
+          document.getElementById("buttons").appendChild(btn);
+        }
+      </script>
+    </div>
+  </body>
+</html>
+

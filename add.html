@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App - Add City</title>
+    <style>
+      body {
+        background-color: bisque;
+        font-size: large;
+        padding: 20px;
+        overflow-y: scroll;
+        height: 100vh;
+      }
+
+      .button-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 30px;
+      }
+
+      .button-list button {
+        height: 50px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form class="input">
+      <div class="form">
+        <label for="name">Enter city name: </label>
+        <input type="text" id="city" required />
+      </div>
+      <br />
+      <button type="submit">Get Weather</button>
+    </form>
+
+    <div class="button-list" id="buttons">
+      <script>
+        const { ipcRenderer } = require("electron");
+        const form = document.querySelector("form");
+
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const city = document.querySelector("#city").value;
+          ipcRenderer.send("city:find", city);
+        });
+
+        for (let i = 1; i <= 40; i++) {
+          const btn = document.createElement("button");
+          btn.textContent = `Scroll Button ${i}`;
+          btn.onclick = () => alert(`Touched Button ${i}`);
+          document.getElementById("buttons").appendChild(btn);
+        }
+      </script>
+    </div>
+  </body>
+</html>

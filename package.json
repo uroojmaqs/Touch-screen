@@ -1,0 +1,19 @@
+{
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "electron": "^35.1.4",
+    "electron-packager": "^17.1.2",
+       "package": "electron-packager .",
+    "wait-on": "^6.0.0"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "main": "main.js",
+  "name": "electron-app",
+  "version": "1.0.0",
+  "description": "A simple Electron app",
+  "dependencies": {
+    "react": "^19.1.0"
+  }
+}
